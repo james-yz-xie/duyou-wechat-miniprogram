@@ -1,0 +1,78 @@
+<!--pages/habit/edit/edit.wxml-->
+<view class="container">
+  <form bindsubmit="submitForm">
+    <!-- 习惯名称 -->
+    <view class="form-section">
+      <view class="form-label">习惯名称</view>
+      <input
+        class="form-input"
+        name="name"
+        value="{{habit.name}}"
+        bindinput="onNameInput"
+        placeholder="例如：早起、阅读、运动..."
+        maxlength="20"
+      />
+    </view>
+
+    <!-- 选择图标 -->
+    <view class="form-section">
+      <view class="form-label">选择图标</view>
+      <view class="icon-grid">
+        <view 
+          wx:for="{{icons}}" 
+          wx:key="*this" 
+          class="icon-item {{habit.icon === item ? 'selected' : ''}}"
+          bindtap="selectIcon"
+          data-icon="{{item}}"
+        >{{item}}</view>
+      </view>
+    </view>
+
+    <!-- 选择颜色 -->
+    <view class="form-section">
+      <view class="form-label">选择颜色</view>
+      <view class="color-grid">
+        <view 
+          wx:for="{{colors}}" 
+          wx:key="value" 
+          class="color-item {{habit.color === item.value ? 'selected' : ''}}"
+          style="background-color: {{item.value}}"
+          bindtap="selectColor"
+          data-color="{{item.value}}"
+        ></view>
+      </view>
+    </view>
+
+    <!-- 提醒时间 -->
+    <view class="form-section">
+      <view class="form-label">每日提醒时间</view>
+      <picker mode="time" value="{{habit.reminder}}" bindchange="onTimeChange">
+        <view class="picker-input">
+          <text wx:if="{{habit.reminder}}">{{habit.reminder}}</text>
+          <text wx:else class="placeholder">选择提醒时间（可选）</text>
+          <text class="picker-arrow">›</text>
+        </view>
+      </picker>
+    </view>
+
+    <!-- 重复频率 -->
+    <view class="form-section">
+      <view class="form-label">重复频率</view>
+      <view class="frequency-grid">
+        <view 
+          wx:for="{{frequencies}}" 
+          wx:key="value" 
+          class="frequency-item {{habit.frequency === item.value ? 'selected' : ''}}"
+          bindtap="selectFrequency"
+          data-value="{{item.value}}"
+        >{{item.label}}</view>
+      </view>
+    </view>
+
+    <!-- 提交按钮 -->
+    <view class="form-actions">
+      <button wx:if="{{isEdit}}" class="btn-danger" bindtap="deleteHabit">删除习惯</button>
+      <button class="btn-primary" form-type="submit">{{isEdit ? '保存修改' : '创建习惯'}}</button>
+    </view>
+  </form>
+</view>

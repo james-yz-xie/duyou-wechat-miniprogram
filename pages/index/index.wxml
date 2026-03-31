@@ -1,0 +1,72 @@
+<!--pages/index/index.wxml-->
+<view class="container">
+  <!-- 头部统计卡片 -->
+  <view class="header-card card">
+    <view class="stats-row">
+      <view class="stat-item">
+        <text class="stat-value">{{stats.todayCheckedCount}}/{{stats.todayTotalCount}}</text>
+        <text class="stat-label">今日完成</text>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item">
+        <text class="stat-value">{{stats.totalCheckIns}}</text>
+        <text class="stat-label">累计打卡</text>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item">
+        <text class="stat-value">{{stats.maxStreak}}</text>
+        <text class="stat-label">最长连续</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 今日习惯列表 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">今日习惯</text>
+      <text class="section-date">{{todayDate}}</text>
+    </view>
+
+    <!-- 空状态 -->
+    <view wx:if="{{habits.length === 0}}" class="empty-state">
+      <view class="empty-icon">📝</view>
+      <view class="empty-text">还没有添加习惯</view>
+      <navigator url="/pages/habit/edit/edit" class="add-btn">+ 添加第一个习惯</navigator>
+    </view>
+
+    <!-- 习惯列表 -->
+    <view wx:else class="habit-list">
+      <view 
+        wx:for="{{habits}}" 
+        wx:key="id" 
+        class="habit-item card {{item.checkedInToday ? 'checked' : ''}}"
+        bindtap="toggleCheckIn"
+        data-id="{{item.id}}"
+      >
+        <view class="habit-left">
+          <view class="habit-icon" style="background-color: {{item.color}}20; color: {{item.color}}">
+            {{item.icon}}
+          </view>
+          <view class="habit-info">
+            <view class="habit-name">{{item.name}}</view>
+            <view class="habit-streak">
+              <text wx:if="{{item.streak > 0}}" class="streak-badge">🔥 连续 {{item.streak}} 天</text>
+              <text wx:else class="streak-hint">开始第一次打卡</text>
+            </view>
+          </view>
+        </view>
+        <view class="habit-right">
+          <view class="check-btn {{item.checkedInToday ? 'checked' : ''}}">
+            <text wx:if="{{item.checkedInToday}}">✓</text>
+            <text wx:else>○</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 添加按钮 -->
+  <navigator url="/pages/habit/edit/edit" class="float-add-btn" hover-class="float-add-btn-hover">
+    <text>+</text>
+  </navigator>
+</view>

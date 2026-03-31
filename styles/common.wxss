@@ -1,0 +1,114 @@
+/* 公共样式 */
+
+/* Flex 布局 */
+.flex {
+  display: flex;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.flex-center {
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-between {
+  justify-content: space-between;
+}
+
+.flex-around {
+  justify-content: space-around;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+/* 文本 */
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-bold {
+  font-weight: bold;
+}
+
+.text-sm {
+  font-size: 24rpx;
+}
+
+.text-base {
+  font-size: 28rpx;
+}
+
+.text-lg {
+  font-size: 32rpx;
+}
+
+.text-xl {
+  font-size: 36rpx;
+}
+
+.text-2xl {
+  font-size: 48rpx;
+}
+
+/* 间距 */
+.mt-10 { margin-top: 10rpx; }
+.mt-20 { margin-top: 20rpx; }
+.mt-30 { margin-top: 30rpx; }
+.mb-10 { margin-bottom: 10rpx; }
+.mb-20 { margin-bottom: 20rpx; }
+.mb-30 { margin-bottom: 30rpx; }
+.ml-10 { margin-left: 10rpx; }
+.ml-20 { margin-left: 20rpx; }
+.mr-10 { margin-right: 10rpx; }
+.mr-20 { margin-right: 20rpx; }
+.p-10 { padding: 10rpx; }
+.p-20 { padding: 20rpx; }
+.p-30 { padding: 30rpx; }
+
+/* 颜色 */
+.text-gray {
+  color: #999;
+}
+
+.text-light {
+  color: #ccc;
+}
+
+.bg-white {
+  background-color: #fff;
+}
+
+/* 圆角 */
+.rounded {
+  border-radius: 8rpx;
+}
+
+.rounded-lg {
+  border-radius: 16rpx;
+}
+
+.rounded-full {
+  border-radius: 9999rpx;
+}
+
+/* 阴影 */
+.shadow {
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.05);
+}
+
+.shadow-lg {
+  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.1);
+}

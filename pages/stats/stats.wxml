@@ -1,0 +1,90 @@
+<!--pages/stats/stats.wxml-->
+<view class="container">
+  <!-- 总览统计 -->
+  <view class="overview-card card">
+    <view class="overview-title">📊 总体统计</view>
+    <view class="overview-stats">
+      <view class="overview-item">
+        <view class="overview-value">{{stats.totalCheckIns}}</view>
+        <view class="overview-label">累计打卡</view>
+      </view>
+      <view class="overview-item">
+        <view class="overview-value">{{stats.totalHabits}}</view>
+        <view class="overview-label">习惯数量</view>
+      </view>
+      <view class="overview-item">
+        <view class="overview-value">{{stats.maxStreak}}</view>
+        <view class="overview-label">最长连续</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 本周打卡 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">本周打卡</text>
+      <text class="section-sub">{{weekRange}}</text>
+    </view>
+    <view class="week-grid">
+      <view wx:for="{{weekDays}}" wx:key="date" class="week-day">
+        <view class="day-label">{{item.label}}</view>
+        <view class="day-dots">
+          <view 
+            wx:for="{{item.habits}}" 
+            wx:for-item="habit" 
+            wx:key="id"
+            class="day-dot {{habit.checked ? 'checked' : ''}}"
+            style="background-color: {{habit.checked ? habit.color : '#f0f0f0'}}"
+          ></view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 各习惯统计 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">习惯详情</text>
+    </view>
+
+    <view wx:if="{{habitStats.length === 0}}" class="empty-state">
+      <view class="empty-icon">📈</view>
+      <view class="empty-text">暂无统计数据</view>
+    </view>
+
+    <view wx:else class="habit-stats-list">
+      <view wx:for="{{habitStats}}" wx:key="id" class="habit-stat-card card">
+        <view class="stat-header">
+          <view class="habit-icon" style="background-color: {{item.color}}20; color: {{item.color}}">
+            {{item.icon}}
+          </view>
+          <view class="habit-name">{{item.name}}</view>
+        </view>
+
+        <view class="stat-grid">
+          <view class="stat-grid-item">
+            <view class="stat-value">{{item.totalCheckIns}}</view>
+            <view class="stat-label">总次数</view>
+          </view>
+          <view class="stat-grid-item">
+            <view class="stat-value">{{item.streak}}</view>
+            <view class="stat-label">当前连续</view>
+          </view>
+          <view class="stat-grid-item">
+            <view class="stat-value">{{item.maxStreak}}</view>
+            <view class="stat-label">最长连续</view>
+          </view>
+        </view>
+
+        <!-- 简易热力图 -->
+        <view class="heatmap">
+          <view 
+            wx:for="{{item.heatmap}}" 
+            wx:key="date"
+            class="heatmap-cell {{item.level}}"
+          ></view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,96 @@
+<!--pages/profile/profile.wxml-->
+<view class="container">
+  <!-- 用户信息卡片 -->
+  <view class="user-card card">
+    <!-- 用户头像 -->
+    <image 
+      wx:if="{{userInfo.avatar}}" 
+      class="user-avatar-img" 
+      src="{{userInfo.avatar}}" 
+      mode="aspectFill"
+    ></image>
+    <view wx:else class="user-avatar">👤</view>
+    
+    <view class="user-info">
+      <view class="user-name-row">
+        <text class="user-name">{{userInfo.nickname || '督友用户'}}</text>
+        <text class="user-id">ID: {{userId}}</text>
+      </view>
+      <view class="user-desc">坚持每一天，遇见更好的自己</view>
+    </view>
+  </view>
+
+  <!-- 授权按钮（未授权时显示） -->
+  <view wx:if="{{!hasUserInfo}}" class="auth-section">
+    <button class="auth-btn" bindtap="getUserProfile">
+      <text>微信授权登录</text>
+    </button>
+    <button class="demo-btn" bindtap="useDemoAccount">
+      <text>使用演示账号</text>
+    </button>
+  </view>
+
+  <!-- 我的成就 -->
+  <view class="section">
+    <view class="section-title">我的成就</view>
+    <view class="achievement-grid">
+      <view class="achievement-item">
+        <view class="achievement-value">{{stats.totalCheckIns}}</view>
+        <view class="achievement-label">累计打卡</view>
+      </view>
+      <view class="achievement-item">
+        <view class="achievement-value">{{stats.maxStreak}}</view>
+        <view class="achievement-label">最长连续</view>
+      </view>
+      <view class="achievement-item">
+        <view class="achievement-value">{{stats.totalHabits}}</view>
+        <view class="achievement-label">培养习惯</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 功能菜单 -->
+  <view class="section">
+    <view class="menu-list">
+      <navigator url="/pages/habit/edit/edit" class="menu-item" hover-class="menu-item-hover">
+        <view class="menu-icon">➕</view>
+        <view class="menu-text">添加习惯</view>
+        <view class="menu-arrow">›</view>
+      </navigator>
+
+      <view class="menu-item" bindtap="exportData">
+        <view class="menu-icon">📤</view>
+        <view class="menu-text">导出数据</view>
+        <view class="menu-arrow">›</view>
+      </view>
+
+      <view class="menu-item" bindtap="clearData">
+        <view class="menu-icon">🗑️</view>
+        <view class="menu-text">清除数据</view>
+        <view class="menu-arrow">›</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 关于 -->
+  <view class="section">
+    <view class="menu-list">
+      <view class="menu-item" bindtap="showAbout">
+        <view class="menu-icon">ℹ️</view>
+        <view class="menu-text">关于督友</view>
+        <view class="menu-arrow">›</view>
+      </view>
+
+      <view class="menu-item" bindtap="showFeedback">
+        <view class="menu-icon">💬</view>
+        <view class="menu-text">意见反馈</view>
+        <view class="menu-arrow">›</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 版本信息 -->
+  <view class="version-info">
+    <text>督友 v1.0.0</text>
+  </view>
+</view>

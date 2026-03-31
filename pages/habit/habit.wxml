@@ -1,0 +1,60 @@
+<!--pages/habit/habit.wxml-->
+<view class="container">
+  <!-- 分类筛选 -->
+  <view class="filter-bar">
+    <view class="filter-item {{filter === 'all' ? 'active' : ''}}" bindtap="setFilter" data-filter="all">全部</view>
+    <view class="filter-item {{filter === 'active' ? 'active' : ''}}" bindtap="setFilter" data-filter="active">进行中</view>
+    <view class="filter-item {{filter === 'archived' ? 'active' : ''}}" bindtap="setFilter" data-filter="archived">已归档</view>
+  </view>
+
+  <!-- 习惯列表 -->
+  <view wx:if="{{filteredHabits.length === 0}}" class="empty-state">
+    <view class="empty-icon">🌱</view>
+    <view class="empty-text">
+      <text wx:if="{{filter === 'all'}}">还没有习惯，开始培养第一个吧</text>
+      <text wx:elif="{{filter === 'active'}}">没有进行中的习惯</text>
+      <text wx:else>没有已归档的习惯</text>
+    </view>
+  </view>
+
+  <view wx:else class="habit-list">
+    <view 
+      wx:for="{{filteredHabits}}" 
+      wx:key="id" 
+      class="habit-card card"
+      bindtap="viewHabit"
+      data-id="{{item.id}}"
+    >
+      <view class="habit-header">
+        <view class="habit-icon" style="background-color: {{item.color}}20; color: {{item.color}}">
+          {{item.icon}}
+        </view>
+        <view class="habit-info">
+          <view class="habit-name">{{item.name}}</view>
+          <view class="habit-meta">
+            <text class="meta-item">总打卡 {{item.totalCheckIns}} 次</text>
+            <text class="meta-divider">·</text>
+            <text class="meta-item">连续 {{item.streak}} 天</text>
+          </view>
+        </view>
+        <view class="habit-status {{item.isActive ? 'active' : 'archived'}}">
+          {{item.isActive ? '进行中' : '已归档'}}
+        </view>
+      </view>
+      
+      <!-- 简易进度条 -->
+      <view class="progress-bar">
+        <view class="progress-fill" style="width: {{item.streak >= 21 ? 100 : item.streak / 21 * 100}}%; background-color: {{item.color}}"></view>
+      </view>
+      <view class="progress-label">
+        <text wx:if="{{item.streak >= 21}}">🎉 已养成习惯</text>
+        <text wx:else>坚持 {{item.streak}}/21 天养成习惯</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 添加按钮 -->
+  <navigator url="/pages/habit/edit/edit" class="float-add-btn" hover-class="float-add-btn-hover">
+    <text>+</text>
+  </navigator>
+</view>

@@ -1,0 +1,214 @@
+/* pages/stats/stats.wxss */
+
+.container {
+  padding-bottom: 40rpx;
+}
+
+/* 总览卡片 */
+.overview-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  margin: 20rpx;
+}
+
+.overview-title {
+  font-size: 28rpx;
+  margin-bottom: 24rpx;
+  opacity: 0.9;
+}
+
+.overview-stats {
+  display: flex;
+  justify-content: space-around;
+}
+
+.overview-item {
+  text-align: center;
+}
+
+.overview-value {
+  font-size: 48rpx;
+  font-weight: bold;
+  margin-bottom: 8rpx;
+}
+
+.overview-label {
+  font-size: 24rpx;
+  opacity: 0.85;
+}
+
+/* Section */
+.section {
+  padding: 20rpx;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.section-sub {
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* 本周打卡 */
+.week-grid {
+  display: flex;
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 20rpx;
+  justify-content: space-between;
+}
+
+.week-day {
+  flex: 1;
+  text-align: center;
+}
+
+.day-label {
+  font-size: 24rpx;
+  color: #999;
+  margin-bottom: 12rpx;
+}
+
+.day-dots {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.day-dot {
+  width: 20rpx;
+  height: 20rpx;
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+
+.day-dot.checked {
+  transform: scale(1.1);
+}
+
+/* 习惯统计 */
+.habit-stats-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.habit-stat-card {
+  padding: 24rpx;
+}
+
+.stat-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.habit-icon {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 12rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28rpx;
+  margin-right: 16rpx;
+}
+
+.habit-name {
+  font-size: 30rpx;
+  font-weight: 500;
+  color: #333;
+}
+
+.stat-grid {
+  display: flex;
+  margin-bottom: 20rpx;
+}
+
+.stat-grid-item {
+  flex: 1;
+  text-align: center;
+  padding: 16rpx 0;
+  background: #f8f8f8;
+  border-radius: 12rpx;
+  margin: 0 6rpx;
+}
+
+.stat-grid-item:first-child {
+  margin-left: 0;
+}
+
+.stat-grid-item:last-child {
+  margin-right: 0;
+}
+
+.stat-value {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 6rpx;
+}
+
+.stat-label {
+  font-size: 22rpx;
+  color: #999;
+}
+
+/* 热力图 */
+.heatmap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6rpx;
+}
+
+.heatmap-cell {
+  width: 24rpx;
+  height: 24rpx;
+  border-radius: 4rpx;
+  background: #f0f0f0;
+}
+
+.heatmap-cell.level-1 {
+  background: #d4edda;
+}
+
+.heatmap-cell.level-2 {
+  background: #a8ddb5;
+}
+
+.heatmap-cell.level-3 {
+  background: #6bb38a;
+}
+
+.heatmap-cell.level-4 {
+  background: #3d8b5e;
+}
+
+/* 空状态 */
+.empty-state {
+  text-align: center;
+  padding: 80rpx 40rpx;
+  background: #fff;
+  border-radius: 16rpx;
+}
+
+.empty-icon {
+  font-size: 80rpx;
+  margin-bottom: 20rpx;
+}
+
+.empty-text {
+  color: #999;
+}
