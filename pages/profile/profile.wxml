@@ -14,7 +14,7 @@
     <view class="user-info">
       <view class="user-name-row">
         <text class="user-name">{{userInfo.nickname || '督友用户'}}</text>
-        <text class="user-id">ID: {{userId}}</text>
+        <text class="user-id">督友ID: {{userId}}</text>
       </view>
       <view class="user-desc">坚持每一天，遇见更好的自己</view>
     </view>
