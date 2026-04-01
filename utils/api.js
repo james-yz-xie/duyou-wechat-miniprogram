@@ -1,26 +1,23 @@
 /**
  * API 服务封装
- * 封装与后端的通信
+ * 使用 wx.cloud.callContainer 调用云托管服务
  */
 
-// API 基础地址（部署后替换为实际地址）
-// 腾讯云微信云托管部署后的地址
-const BASE_URL = 'https://springboot-po0n-240642-4-1417697344.sh.run.tcloudbase.com/api';
+// 云开发配置
+let CLOUD_ENV = '';
+let SERVICE_NAME = '';
+
+/**
+ * 初始化云开发配置
+ */
+function initCloudConfig(env, serviceName) {
+  CLOUD_ENV = env;
+  SERVICE_NAME = serviceName;
+  console.log('云开发配置初始化:', { env, serviceName });
+}
 
 // 是否使用本地存储（离线模式）
 let offlineMode = false;
-
-/**
- * 设置 API 基础地址
- */
-function setBaseUrl(url) {
-  // 如果是相对路径，说明是云托管环境
-  if (!url.startsWith('http')) {
-    BASE_URL = '/api';
-  } else {
-    BASE_URL = url + '/api';
-  }
-}
 
 /**
  * 获取存储的 openid
@@ -37,24 +34,36 @@ function getUserId() {
 }
 
 /**
- * 通用请求方法
+ * 云调用请求方法
  */
 function request(options) {
   return new Promise((resolve, reject) => {
     const openid = getOpenid();
     const userId = getUserId();
     
-    wx.request({
-      url: options.url,
+    console.log('request options:', JSON.stringify(options));
+    console.log('request data:', JSON.stringify(options.data));
+    
+    wx.cloud.callContainer({
+      config: {
+        env: CLOUD_ENV
+      },
+      path: options.path,
       method: options.method || 'GET',
       data: options.data,
       header: {
+        'X-WX-SERVICE': SERVICE_NAME,
         'Content-Type': 'application/json',
         'X-WX-OPENID': openid,
         'X-USER-ID': userId,
         ...options.header
       },
       success(res) {
+        console.log('API响应:', {
+          path: options.path,
+          statusCode: res.statusCode,
+          data: res.data
+        });
         if (res.statusCode === 200) {
           if (res.data.code === 0 || res.data.code === 200) {
             resolve(res.data.data);
@@ -66,11 +75,11 @@ function request(options) {
           handleLogin();
           reject(new Error('请先登录'));
         } else {
-          reject(new Error('网络错误'));
+          reject(new Error(`网络错误: ${res.statusCode}`));
         }
       },
       fail(err) {
-        console.error('API 请求失败:', err);
+        console.error('云调用请求失败:', err);
         offlineMode = true;
         reject(err);
       }
@@ -93,7 +102,7 @@ function handleLogin() {
 async function loginWithCode(code) {
   try {
     const result = await request({
-      url: `${BASE_URL}/user/login`,
+      path: '/api/user/login',
       method: 'POST',
       data: { code, nickname: '', avatar: '' }
     });
@@ -117,7 +126,7 @@ async function loginWithCode(code) {
 async function login(openid) {
   try {
     const result = await request({
-      url: `${BASE_URL}/user/login`,
+      path: '/api/user/login',
       method: 'POST',
       data: { code: openid }
     });
@@ -143,7 +152,7 @@ async function getHabits() {
   
   try {
     return await request({
-      url: `${BASE_URL}/habits?userId=${userId}`,
+      path: `/api/habits?userId=${userId}`,
       method: 'GET'
     });
   } catch (error) {
@@ -158,7 +167,7 @@ async function getHabits() {
 async function getHabitById(id) {
   try {
     return await request({
-      url: `${BASE_URL}/habits/${id}`,
+      path: `/api/habits/${id}`,
       method: 'GET'
     });
   } catch (error) {
@@ -176,9 +185,11 @@ async function createHabit(habitData) {
     throw new Error('请先登录');
   }
   
+  console.log('创建习惯请求:', { userId, habitData });
+  
   try {
     return await request({
-      url: `${BASE_URL}/habits?userId=${userId}`,
+      path: `/api/habits?userId=${userId}`,
       method: 'POST',
       data: habitData
     });
@@ -194,7 +205,7 @@ async function createHabit(habitData) {
 async function updateHabit(id, habitData) {
   try {
     return await request({
-      url: `${BASE_URL}/habits/${id}`,
+      path: `/api/habits/${id}`,
       method: 'PUT',
       data: habitData
     });
@@ -215,7 +226,7 @@ async function deleteHabit(id) {
   
   try {
     return await request({
-      url: `${BASE_URL}/habits/${id}?userId=${userId}`,
+      path: `/api/habits/${id}?userId=${userId}`,
       method: 'DELETE'
     });
   } catch (error) {
@@ -235,7 +246,7 @@ async function checkIn(habitId) {
   
   try {
     return await request({
-      url: `${BASE_URL}/checkin?userId=${userId}`,
+      path: `/api/checkin?userId=${userId}`,
       method: 'POST',
       data: { habitId }
     });
@@ -255,13 +266,13 @@ async function uncheckIn(habitId, dateStr) {
   }
   
   try {
-    let url = `${BASE_URL}/checkin?userId=${userId}&habitId=${habitId}`;
+    let path = `/api/checkin?userId=${userId}&habitId=${habitId}`;
     if (dateStr) {
-      url += `&dateStr=${dateStr}`;
+      path += `&dateStr=${dateStr}`;
     }
     
     return await request({
-      url,
+      path,
       method: 'DELETE'
     });
   } catch (error) {
@@ -281,7 +292,7 @@ async function getTodayStatus() {
   
   try {
     return await request({
-      url: `${BASE_URL}/checkin/today?userId=${userId}`,
+      path: `/api/checkin/today?userId=${userId}`,
       method: 'GET'
     });
   } catch (error) {
@@ -301,7 +312,7 @@ async function getStatistics() {
   
   try {
     return await request({
-      url: `${BASE_URL}/checkin/stats?userId=${userId}`,
+      path: `/api/checkin/stats?userId=${userId}`,
       method: 'GET'
     });
   } catch (error) {
@@ -316,12 +327,53 @@ async function getStatistics() {
 async function getHabitCheckIns(habitId, year, month) {
   try {
     return await request({
-      url: `${BASE_URL}/checkin/habit/${habitId}?year=${year}&month=${month}`,
+      path: `/api/checkin/habit/${habitId}?year=${year}&month=${month}`,
       method: 'GET'
     });
   } catch (error) {
     console.error('获取打卡记录失败:', error);
     return [];
+  }
+}
+
+/**
+ * 更新用户信息
+ */
+async function updateUserInfo(userInfo) {
+  const userId = getUserId();
+  if (!userId) {
+    throw new Error('请先登录');
+  }
+  
+  try {
+    return await request({
+      path: `/api/user/update?userId=${userId}`,
+      method: 'POST',
+      data: userInfo
+    });
+  } catch (error) {
+    console.error('更新用户信息失败:', error);
+    throw error;
+  }
+}
+
+/**
+ * 删除用户（注销）
+ */
+async function deleteUser() {
+  const userId = getUserId();
+  if (!userId) {
+    throw new Error('请先登录');
+  }
+  
+  try {
+    return await request({
+      path: `/api/user/delete?userId=${userId}`,
+      method: 'POST'
+    });
+  } catch (error) {
+    console.error('注销失败:', error);
+    throw error;
   }
 }
 
@@ -340,9 +392,11 @@ function setOfflineMode(mode) {
 }
 
 module.exports = {
-  setBaseUrl,
+  initCloudConfig,
   login,
   loginWithCode,
+  updateUserInfo,
+  deleteUser,
   getHabits,
   getHabitById,
   createHabit,

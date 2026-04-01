@@ -2,8 +2,19 @@
 const storage = require('./utils/storage');
 const api = require('./utils/api');
 
+// 云开发环境ID
+const CLOUD_ENV = 'prod-1gjkl9vyaa17d3a2';
+
 App({
   onLaunch() {
+    // 初始化云开发
+    wx.cloud.init({
+      env: CLOUD_ENV
+    });
+    
+    // 初始化 API 模块
+    api.initCloudConfig(CLOUD_ENV, 'springboot-po0n');
+    
     // 初始化
     this.initApp();
   },

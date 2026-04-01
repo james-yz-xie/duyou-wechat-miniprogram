@@ -1,130 +1,124 @@
-/* pages/profile/profile.wxss */
+/* pages/profile/profile.wxss - 小清新风格，提高对比度 */
 
 .container {
   padding-bottom: 40rpx;
+  background: linear-gradient(180deg, #d8edd8 0%, #f0f7f0 20%);
 }
 
 /* 用户卡片 */
 .user-card {
   display: flex;
   align-items: center;
-  padding: 40rpx;
-  margin: 20rpx;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 48rpx;
+  margin: 24rpx;
+  background: linear-gradient(135deg, #5aab7a 0%, #6abb8a 50%, #7acc9a 100%);
   color: #fff;
+  border-radius: 32rpx;
+  box-shadow: 0 8rpx 32rpx rgba(90, 171, 122, 0.3);
 }
 
 .user-avatar {
-  width: 100rpx;
-  height: 100rpx;
+  width: 120rpx;
+  height: 120rpx;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.35);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 48rpx;
-  margin-right: 24rpx;
+  font-size: 60rpx;
+  margin-right: 28rpx;
 }
 
 .user-avatar-img {
-  width: 100rpx;
-  height: 100rpx;
+  width: 120rpx;
+  height: 120rpx;
   border-radius: 50%;
-  margin-right: 24rpx;
-  border: 4rpx solid rgba(255, 255, 255, 0.5);
+  margin-right: 28rpx;
+  border: 4rpx solid rgba(255, 255, 255, 0.7);
 }
 
 .user-name-row {
   display: flex;
   align-items: center;
-  margin-bottom: 8rpx;
+  margin-bottom: 10rpx;
+  flex-wrap: wrap;
 }
 
 .user-name {
-  font-size: 36rpx;
-  font-weight: bold;
+  font-size: 40rpx;
+  font-weight: 600;
+  letter-spacing: 1rpx;
 }
 
 .user-id {
-  font-size: 20rpx;
-  opacity: 0.7;
+  font-size: 26rpx;
+  opacity: 0.95;
   margin-left: 16rpx;
-  background: rgba(255, 255, 255, 0.2);
-  padding: 4rpx 12rpx;
-  border-radius: 8rpx;
+  background: rgba(255, 255, 255, 0.3);
+  padding: 8rpx 18rpx;
+  border-radius: 20rpx;
 }
 
 .user-desc {
-  font-size: 24rpx;
-  opacity: 0.9;
+  font-size: 30rpx;
+  opacity: 0.95;
+  letter-spacing: 1rpx;
 }
 
 /* 授权区域 */
 .auth-section {
-  display: flex;
-  gap: 20rpx;
-  padding: 20rpx;
-  margin-bottom: 10rpx;
+  padding: 24rpx;
+  margin-bottom: 16rpx;
 }
 
 .auth-btn {
-  flex: 1;
-  height: 80rpx;
-  background: linear-gradient(135deg, #07c160 0%, #06ad56 100%);
+  width: calc(100% - 48rpx);
+  height: 96rpx;
+  background: linear-gradient(135deg, #5aab7a 0%, #4a9a6a 100%);
   color: #fff;
-  font-size: 28rpx;
-  border-radius: 40rpx;
+  font-size: 34rpx;
+  border-radius: 50rpx;
   display: flex;
   align-items: center;
   justify-content: center;
   border: none;
+  margin: 24rpx;
+  box-shadow: 0 8rpx 24rpx rgba(90, 171, 122, 0.4);
+  letter-spacing: 2rpx;
 }
 
 .auth-btn::after {
   border: none;
 }
 
-.demo-btn {
-  flex: 1;
-  height: 80rpx;
-  background: #fff;
-  color: #666;
-  font-size: 28rpx;
-  border-radius: 40rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2rpx solid #ddd;
-}
-
-.demo-btn::after {
-  border: none;
-}
-
 /* Section */
 .section {
-  padding: 20rpx;
+  padding: 24rpx;
 }
 
 .section-title {
-  font-size: 28rpx;
-  color: #999;
-  margin-bottom: 16rpx;
-  padding-left: 10rpx;
+  font-size: 32rpx;
+  color: #3a5a3a;
+  margin-bottom: 20rpx;
+  padding-left: 12rpx;
+  font-weight: 600;
+  letter-spacing: 1rpx;
 }
 
 /* 成就 */
 .achievement-grid {
   display: flex;
   background: #fff;
-  border-radius: 16rpx;
-  padding: 20rpx 0;
+  border-radius: 24rpx;
+  padding: 32rpx 0;
+  box-shadow: 0 4rpx 20rpx rgba(90, 171, 122, 0.12);
+  border: 2rpx solid rgba(90, 171, 122, 0.18);
 }
 
 .achievement-item {
   flex: 1;
   text-align: center;
-  border-right: 1rpx solid #f0f0f0;
+  border-right: 2rpx solid rgba(90, 171, 122, 0.18);
 }
 
 .achievement-item:last-child {
@@ -132,29 +126,34 @@
 }
 
 .achievement-value {
-  font-size: 48rpx;
-  font-weight: bold;
-  color: #4A90D9;
-  margin-bottom: 8rpx;
+  font-size: 56rpx;
+  font-weight: 700;
+  color: #5aab7a;
+  margin-bottom: 10rpx;
+  letter-spacing: -1rpx;
 }
 
 .achievement-label {
-  font-size: 24rpx;
-  color: #999;
+  font-size: 28rpx;
+  color: #5a7a5a;
+  letter-spacing: 1rpx;
 }
 
 /* 菜单 */
 .menu-list {
   background: #fff;
-  border-radius: 16rpx;
+  border-radius: 24rpx;
   overflow: hidden;
+  box-shadow: 0 4rpx 20rpx rgba(90, 171, 122, 0.1);
+  border: 2rpx solid rgba(90, 171, 122, 0.15);
 }
 
 .menu-item {
   display: flex;
   align-items: center;
-  padding: 30rpx;
-  border-bottom: 1rpx solid #f5f5f5;
+  padding: 36rpx;
+  border-bottom: 2rpx solid rgba(90, 171, 122, 0.1);
+  transition: background 0.2s;
 }
 
 .menu-item:last-child {
@@ -162,29 +161,36 @@
 }
 
 .menu-item-hover {
-  background: #f8f8f8;
+  background: rgba(90, 171, 122, 0.08);
 }
 
 .menu-icon {
-  font-size: 36rpx;
-  margin-right: 20rpx;
+  font-size: 44rpx;
+  margin-right: 28rpx;
 }
 
 .menu-text {
   flex: 1;
-  font-size: 30rpx;
-  color: #333;
+  font-size: 34rpx;
+  color: #2d4a2d;
+  letter-spacing: 1rpx;
 }
 
 .menu-arrow {
-  color: #ccc;
-  font-size: 36rpx;
+  color: #8aa88a;
+  font-size: 40rpx;
+}
+
+/* 危险操作按钮 */
+.menu-item-danger .menu-text {
+  color: #d65a5a;
 }
 
 /* 版本 */
 .version-info {
   text-align: center;
-  padding: 40rpx;
-  color: #ccc;
-  font-size: 24rpx;
+  padding: 48rpx;
+  color: #8aa88a;
+  font-size: 28rpx;
+  letter-spacing: 2rpx;
 }

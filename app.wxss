@@ -1,78 +1,99 @@
 /**app.wxss**/
 @import './styles/common.wxss';
 
+/* 小清新主题配色 - 提高对比度 */
 page {
-  background-color: #f5f5f5;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  font-size: 16px;
+  background-color: #f0f7f0;
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
+  font-size: 32rpx;
   line-height: 1.6;
-  color: #333;
+  color: #2d4a2d;
 }
 
-/* 主色调 */
+/* 主色调 - 清新薄荷绿 */
 .primary-color {
-  color: #4A90D9;
+  color: #5aab7a;
 }
 
 .primary-bg {
-  background-color: #4A90D9;
+  background-color: #5aab7a;
 }
 
-/* 成功色 */
+/* 成功色 - 柔和绿 */
 .success-color {
-  color: #52c41a;
+  color: #5aab7a;
 }
 
 .success-bg {
-  background-color: #52c41a;
+  background-color: #5aab7a;
 }
 
-/* 警告色 */
+/* 警告色 - 暖橙 */
 .warning-color {
-  color: #faad14;
+  color: #e89a3c;
 }
 
-/* 危险色 */
+/* 危险色 - 柔和红 */
 .danger-color {
-  color: #ff4d4f;
+  color: #d65a5a;
 }
 
 /* 通用容器 */
 .container {
-  padding: 20rpx;
+  padding: 24rpx;
 }
 
-/* 卡片样式 */
+/* 卡片样式 - 更明显 */
 .card {
   background-color: #fff;
-  border-radius: 16rpx;
-  padding: 24rpx;
-  margin-bottom: 20rpx;
-  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.05);
+  border-radius: 24rpx;
+  padding: 28rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 4rpx 24rpx rgba(90, 171, 122, 0.15);
+  border: 2rpx solid rgba(90, 171, 122, 0.2);
 }
 
-/* 按钮样式 */
+/* 按钮样式 - 圆润 */
 .btn-primary {
-  background-color: #4A90D9;
+  background: linear-gradient(135deg, #5aab7a 0%, #4a9a6a 100%);
   color: #fff;
-  border-radius: 40rpx;
-  padding: 20rpx 40rpx;
+  border-radius: 50rpx;
+  padding: 24rpx 56rpx;
   text-align: center;
-  font-size: 32rpx;
+  font-size: 34rpx;
+  box-shadow: 0 8rpx 24rpx rgba(90, 171, 122, 0.35);
 }
 
 .btn-primary:active {
-  background-color: #3a7bc8;
+  background: linear-gradient(135deg, #4a9a6a 0%, #3a8a5a 100%);
 }
 
 /* 空状态 */
 .empty-state {
   text-align: center;
-  padding: 100rpx 40rpx;
-  color: #999;
+  padding: 120rpx 40rpx;
+  color: #7aa87a;
 }
 
 .empty-state .icon {
-  font-size: 120rpx;
+  font-size: 140rpx;
+  margin-bottom: 24rpx;
+  opacity: 0.7;
+}
+
+/* 通用标题 */
+.section-title {
+  font-size: 34rpx;
+  color: #3a5a3a;
   margin-bottom: 20rpx;
+  padding-left: 16rpx;
+  font-weight: 600;
+  letter-spacing: 1rpx;
+}
+
+/* 分割线 */
+.divider {
+  height: 2rpx;
+  background: linear-gradient(90deg, transparent, rgba(90, 171, 122, 0.4), transparent);
+  margin: 20rpx 0;
 }

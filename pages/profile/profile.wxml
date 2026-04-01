@@ -2,31 +2,29 @@
 <view class="container">
   <!-- 用户信息卡片 -->
   <view class="user-card card">
-    <!-- 用户头像 -->
+    <!-- 用户头像（emoji或图片） -->
     <image 
-      wx:if="{{userInfo.avatar}}" 
+      wx:if="{{userInfo.avatar && userInfo.avatar.indexOf('http') === 0}}" 
       class="user-avatar-img" 
       src="{{userInfo.avatar}}" 
       mode="aspectFill"
     ></image>
+    <view wx:elif="{{userInfo.avatar}}" class="user-avatar">{{userInfo.avatar}}</view>
     <view wx:else class="user-avatar">👤</view>
     
     <view class="user-info">
       <view class="user-name-row">
         <text class="user-name">{{userInfo.nickname || '督友用户'}}</text>
-        <text class="user-id">督友ID: {{userId}}</text>
+        <text class="user-id" wx:if="{{userId}}">督友ID: {{userId}}</text>
       </view>
       <view class="user-desc">坚持每一天，遇见更好的自己</view>
     </view>
   </view>
 
-  <!-- 授权按钮（未授权时显示） -->
-  <view wx:if="{{!hasUserInfo}}" class="auth-section">
-    <button class="auth-btn" bindtap="getUserProfile">
-      <text>微信授权登录</text>
-    </button>
-    <button class="demo-btn" bindtap="useDemoAccount">
-      <text>使用演示账号</text>
+  <!-- 未登录时显示登录按钮 -->
+  <view wx:if="{{!userId}}" class="auth-section">
+    <button class="auth-btn" bindtap="doLogin">
+      <text>微信登录</text>
     </button>
   </view>
 
@@ -84,6 +82,17 @@
       <view class="menu-item" bindtap="showFeedback">
         <view class="menu-icon">💬</view>
         <view class="menu-text">意见反馈</view>
+        <view class="menu-arrow">›</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 注销按钮 -->
+  <view class="section">
+    <view class="menu-list">
+      <view class="menu-item menu-item-danger" bindtap="deleteAccount">
+        <view class="menu-icon">⚠️</view>
+        <view class="menu-text">注销账号</view>
         <view class="menu-arrow">›</view>
       </view>
     </view>

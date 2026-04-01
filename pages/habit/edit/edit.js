@@ -98,6 +98,7 @@ Page({
   },
 
   async submitForm(e) {
+    console.log('submitForm called, habit:', this.data.habit);
     const name = this.data.habit.name;
     
     if (!name || !name.trim()) {
@@ -111,6 +112,8 @@ Page({
       ...this.data.habit,
       name: name.trim()
     };
+    
+    console.log('habitData to submit:', habitData);
 
     try {
       if (this.data.isEdit) {

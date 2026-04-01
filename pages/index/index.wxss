@@ -1,21 +1,24 @@
-/* pages/index/index.wxss */
+/* pages/index/index.wxss - 小清新风格，提高对比度 */
 
 .container {
   padding-bottom: 120rpx;
+  background: linear-gradient(180deg, #d8edd8 0%, #f0f7f0 20%);
 }
 
 /* 头部统计卡片 */
 .header-card {
-  background: linear-gradient(135deg, #4A90D9 0%, #357ABD 100%);
-  margin: 20rpx;
+  background: linear-gradient(135deg, #5aab7a 0%, #6abb8a 50%, #7acc9a 100%);
+  margin: 24rpx;
   color: #fff;
+  border-radius: 28rpx;
+  box-shadow: 0 8rpx 32rpx rgba(90, 171, 122, 0.3);
 }
 
 .stats-row {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  padding: 20rpx 0;
+  padding: 28rpx 0;
 }
 
 .stat-item {
@@ -25,25 +28,27 @@
 
 .stat-value {
   display: block;
-  font-size: 48rpx;
-  font-weight: bold;
-  margin-bottom: 8rpx;
+  font-size: 56rpx;
+  font-weight: 700;
+  margin-bottom: 10rpx;
+  letter-spacing: -1rpx;
 }
 
 .stat-label {
-  font-size: 24rpx;
-  opacity: 0.9;
+  font-size: 28rpx;
+  opacity: 0.95;
+  letter-spacing: 1rpx;
 }
 
 .stat-divider {
-  width: 1rpx;
-  height: 60rpx;
-  background: rgba(255, 255, 255, 0.3);
+  width: 2rpx;
+  height: 72rpx;
+  background: rgba(255, 255, 255, 0.35);
 }
 
 /* Section */
 .section {
-  padding: 20rpx;
+  padding: 24rpx;
 }
 
 .section-header {
@@ -54,14 +59,15 @@
 }
 
 .section-title {
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #333;
+  font-size: 34rpx;
+  font-weight: 600;
+  color: #3a5a3a;
+  letter-spacing: 1rpx;
 }
 
 .section-date {
-  font-size: 24rpx;
-  color: #999;
+  font-size: 28rpx;
+  color: #6a9a6a;
 }
 
 /* 空状态 */
@@ -69,46 +75,55 @@
   text-align: center;
   padding: 100rpx 40rpx;
   background: #fff;
-  border-radius: 16rpx;
+  border-radius: 24rpx;
+  border: 3rpx dashed rgba(90, 171, 122, 0.4);
 }
 
 .empty-icon {
-  font-size: 80rpx;
-  margin-bottom: 20rpx;
+  font-size: 120rpx;
+  margin-bottom: 28rpx;
+  opacity: 0.65;
 }
 
 .empty-text {
-  color: #999;
-  margin-bottom: 30rpx;
+  color: #5a8a5a;
+  margin-bottom: 36rpx;
+  font-size: 32rpx;
 }
 
 .add-btn {
   display: inline-block;
-  background: #4A90D9;
+  background: linear-gradient(135deg, #5aab7a 0%, #4a9a6a 100%);
   color: #fff;
-  padding: 16rpx 40rpx;
-  border-radius: 40rpx;
-  font-size: 28rpx;
+  padding: 22rpx 56rpx;
+  border-radius: 50rpx;
+  font-size: 32rpx;
+  box-shadow: 0 8rpx 24rpx rgba(90, 171, 122, 0.35);
+  letter-spacing: 1rpx;
 }
 
 /* 习惯列表 */
 .habit-list {
   display: flex;
   flex-direction: column;
-  gap: 16rpx;
+  gap: 20rpx;
 }
 
 .habit-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 24rpx;
+  padding: 32rpx;
   transition: all 0.3s;
+  background: #fff;
+  border-radius: 24rpx;
+  box-shadow: 0 4rpx 20rpx rgba(90, 171, 122, 0.1);
+  border: 2rpx solid rgba(90, 171, 122, 0.15);
 }
 
 .habit-item.checked {
-  background: #f0fff0;
-  border: 2rpx solid #52c41a;
+  background: linear-gradient(135deg, rgba(90, 171, 122, 0.12) 0%, rgba(106, 187, 138, 0.08) 100%);
+  border-color: rgba(90, 171, 122, 0.4);
 }
 
 .habit-left {
@@ -118,14 +133,15 @@
 }
 
 .habit-icon {
-  width: 80rpx;
-  height: 80rpx;
-  border-radius: 20rpx;
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: 24rpx;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 36rpx;
-  margin-right: 20rpx;
+  font-size: 44rpx;
+  margin-right: 28rpx;
+  background: rgba(90, 171, 122, 0.15);
 }
 
 .habit-info {
@@ -133,45 +149,49 @@
 }
 
 .habit-name {
-  font-size: 32rpx;
+  font-size: 36rpx;
   font-weight: 500;
-  color: #333;
-  margin-bottom: 8rpx;
+  color: #2d4a2d;
+  margin-bottom: 10rpx;
+  letter-spacing: 1rpx;
 }
 
 .habit-streak {
-  font-size: 24rpx;
+  font-size: 28rpx;
 }
 
 .streak-badge {
-  color: #ff6b00;
+  color: #e89a3c;
+  font-weight: 600;
 }
 
 .streak-hint {
-  color: #999;
+  color: #7aa87a;
 }
 
 .habit-right {
-  margin-left: 20rpx;
+  margin-left: 28rpx;
 }
 
 .check-btn {
-  width: 56rpx;
-  height: 56rpx;
+  width: 72rpx;
+  height: 72rpx;
   border-radius: 50%;
-  border: 4rpx solid #ddd;
+  border: 4rpx solid rgba(90, 171, 122, 0.35);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 32rpx;
-  color: #ddd;
+  font-size: 36rpx;
+  color: rgba(90, 171, 122, 0.35);
   transition: all 0.3s;
+  background: #fff;
 }
 
 .check-btn.checked {
-  background: #52c41a;
-  border-color: #52c41a;
+  background: linear-gradient(135deg, #5aab7a 0%, #4a9a6a 100%);
+  border-color: #5aab7a;
   color: #fff;
+  box-shadow: 0 4rpx 16rpx rgba(90, 171, 122, 0.4);
 }
 
 /* 浮动添加按钮 */
@@ -179,16 +199,16 @@
   position: fixed;
   right: 40rpx;
   bottom: 120rpx;
-  width: 100rpx;
-  height: 100rpx;
-  background: linear-gradient(135deg, #4A90D9 0%, #357ABD 100%);
+  width: 116rpx;
+  height: 116rpx;
+  background: linear-gradient(135deg, #5aab7a 0%, #4a9a6a 100%);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #fff;
-  font-size: 48rpx;
-  box-shadow: 0 8rpx 24rpx rgba(74, 144, 217, 0.4);
+  font-size: 56rpx;
+  box-shadow: 0 8rpx 32rpx rgba(90, 171, 122, 0.45);
 }
 
 .float-add-btn-hover {

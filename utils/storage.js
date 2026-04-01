@@ -111,6 +111,8 @@ async function getHabitById(id) {
  * 创建习惯
  */
 async function createHabit(habitData) {
+  console.log('storage.createHabit 收到:', habitData);
+  
   const habit = {
     id: generateId(),
     name: habitData.name,
@@ -125,8 +127,11 @@ async function createHabit(habitData) {
     createdAt: new Date().toISOString()
   };
   
+  console.log('storage.createHabit 构造的 habit:', habit);
+  
   if (useApi) {
     try {
+      console.log('调用 api.createHabit, 参数:', habitData);
       const newHabit = await api.createHabit(habitData);
       // 更新本地缓存
       const habits = wx.getStorageSync(STORAGE_KEYS.HABITS) || [];

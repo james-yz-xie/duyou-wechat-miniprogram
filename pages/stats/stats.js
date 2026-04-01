@@ -41,7 +41,7 @@ Page({
   async loadStats() {
     try {
       this.setData({ loading: true });
-      const stats = await api.getStats();
+      const stats = await api.getStatistics();
       this.setData({
         stats,
         loading: false
