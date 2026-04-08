@@ -12,7 +12,9 @@ Page({
       maxStreak: 0
     },
     todayDate: '',
-    loading: false
+    loading: false,
+    remindTime: '',
+    hasUnchecked: false
   },
 
   onLoad() {
@@ -20,7 +22,10 @@ Page({
   },
 
   onShow() {
+    // 加载数据
     this.loadData();
+    // 检查提醒时段
+    this.checkRemind();
   },
 
   formatTodayDate() {
@@ -90,5 +95,105 @@ Page({
   async onPullDownRefresh() {
     await this.loadData();
     wx.stopPullDownRefresh();
+  },
+
+  // ========== 提醒功能 ==========
+
+  /**
+   * 检查是否到达提醒时段
+   */
+  checkRemind() {
+    // 检查是否处于提醒时段
+    if (!this.isRemindTime()) return;
+
+    const remindTime = this.getRemindTimeLabel();
+    const cacheKey = `remind_${remindTime}`;
+    const cached = wx.getStorageSync(cacheKey);
+
+    // 同一时段只弹窗一次
+    if (cached === true) return;
+
+    this.checkUnCheckedHabits().then(hasUnchecked => {
+      if (hasUnchecked) {
+        // 标记已弹窗
+        wx.setStorageSync(cacheKey, true);
+      }
+    });
+  },
+
+  /**
+   * 检查是否在提醒时段（8:00、12:00、20:00，前后 5 分钟）
+   */
+  isRemindTime() {
+    const now = new Date();
+    const hour = now.getHours();
+    const minutes = now.getMinutes();
+
+    // 检查是否接近目标时间
+    const isNearTarget = [8, 12, 20].some(h => {
+      const diff = Math.abs(hour - h);
+      if (diff === 0) return minutes < 5;      // 同小时，分钟 <5
+      if (diff === 1) return minutes >= 55;    // 相差 1 小时，分钟>55
+      return false;
+    });
+
+    if (!isNearTarget) return false;
+
+    // 检查上次弹窗是否超过 10 分钟
+    const nowStr = `${hour}:${String(minutes).padStart(2, '0')}`;
+    const lastTime = wx.getStorageSync('remind_last_time');
+
+    if (lastTime && lastTime === nowStr) {
+      return false;
+    }
+
+    return true;
+  },
+
+  /**
+   * 获取当前提醒时段标签
+   */
+  getRemindTimeLabel() {
+    const now = new Date();
+    const hour = now.getHours();
+    if (hour >= 7 && hour < 9) return '8';
+    if (hour >= 11 && hour < 13) return '12';
+    if (hour >= 19 && hour < 21) return '20';
+    return '';
+  },
+
+  /**
+   * 检查未打卡习惯并弹窗提醒
+   */
+  async checkUnCheckedHabits() {
+    try {
+      const habits = await storage.getTodayStatus();
+      const unchecked = habits.filter(h => !h.checkedInToday);
+
+      if (unchecked.length > 0) {
+        // 记录本次提醒时间
+        const nowStr = new Date().toTimeString().slice(0, 5);
+        wx.setStorageSync('remind_last_time', nowStr);
+
+        wx.showModal({
+          title: '提醒',
+          content: `以下习惯还未打卡：\n${unchecked.map(h => `${h.icon} ${h.name}`).join('\n')}`,
+          showCancel: true,
+          confirmText: '去打卡',
+          cancelText: '稍后再说',
+          success: (res) => {
+            if (res.confirm) {
+              wx.switchTab({ url: '/pages/index/index' });
+            }
+          }
+        });
+
+        return true;
+      }
+    } catch (error) {
+      console.error('检查未打卡习惯失败:', error);
+    }
+
+    return false;
   }
 });

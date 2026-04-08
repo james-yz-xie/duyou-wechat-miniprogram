@@ -7,6 +7,8 @@ const CLOUD_ENV = 'prod-1gjkl9vyaa17d3a2';
 
 App({
   onLaunch() {
+    this.initPromise = null;
+
     // 初始化云开发
     wx.cloud.init({
       env: CLOUD_ENV
@@ -16,7 +18,14 @@ App({
     api.initCloudConfig(CLOUD_ENV, 'springboot-po0n');
     
     // 初始化
-    this.initApp();
+    this.initPromise = this.initApp()
+      .catch((error) => {
+        console.error('应用初始化失败:', error);
+        this.useLocalMode();
+      })
+      .finally(() => {
+        this.globalData.appReady = true;
+      });
   },
 
   async initApp() {
@@ -31,6 +40,10 @@ App({
 
     // 尝试登录
     await this.tryLogin();
+  },
+
+  waitForReady() {
+    return this.initPromise || Promise.resolve();
   },
 
   /**
@@ -110,6 +123,7 @@ App({
   globalData: {
     userInfo: null,
     userId: null,
-    version: '1.0.0'
+    version: '1.0.0',
+    appReady: false
   }
 });

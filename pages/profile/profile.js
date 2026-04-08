@@ -11,6 +11,7 @@ Page({
     },
     userId: '',
     hasUserInfo: false,
+    hasRemind: false,
     stats: {
       totalCheckIns: 0,
       totalHabits: 0,
@@ -31,14 +32,68 @@ Page({
   // 加载本地存储的用户信息
   loadUserInfo() {
     const userInfo = wx.getStorageSync('userInfo') || {};
-    const hasUserInfo = !!(userInfo.nickname || userInfo.avatar);
+    const hasUserInfo = !!(userInfo.nickname);
     const app = getApp();
     const userId = app.globalData.userId || wx.getStorageSync('userId') || '';
-    this.setData({ 
+    // 加载提醒状态
+    const hasRemind = wx.getStorageSync('hasRemind') || false;
+    this.setData({
       userInfo,
       hasUserInfo,
+      hasRemind,
       userId: userId ? String(userId) : ''
     });
+  },
+
+  // 切换提醒开关
+  async toggleRemind() {
+    const { hasRemind } = this.data;
+
+    if (hasRemind) {
+      // 关闭提醒
+      wx.showModal({
+        title: '关闭提醒',
+        content: '关闭后，将不再提醒未打卡习惯。',
+        success: (res) => {
+          if (res.confirm) {
+            wx.removeStorageSync('hasRemind');
+            this.setData({ hasRemind: false });
+            util.showSuccess('已关闭提醒');
+          }
+        }
+      });
+    } else {
+      // 开启提醒 - 请求订阅消息授权
+      try {
+        util.showLoading('请求授权. . .');
+
+        await wx.requestSubscribeMessage({
+          tmplIds: [
+            'YOUR_TEMPLATE_ID_1' // TODO: 替换为你的订阅消息模板 ID
+          ],
+          success: (res) => {
+            util.hideLoading();
+
+            if (res['YOUR_TEMPLATE_ID_1'] === 'ok') {
+              wx.setStorageSync('hasRemind', true);
+              this.setData({ hasRemind: true });
+              util.showSuccess('开启成功！每天 8/12/20 点提醒你打卡');
+            } else {
+              util.showError('订阅失败，请重试');
+            }
+          },
+          fail: (err) => {
+            util.hideLoading();
+            console.error('订阅失败:', err);
+            util.showError('操作失败');
+          }
+        });
+      } catch (error) {
+        util.hideLoading();
+        console.error('开启提醒失败:', error);
+        util.showError('开启失败');
+      }
+    }
   },
 
   // 微信登录（自动生成昵称和头像）
@@ -165,23 +220,62 @@ Page({
   },
 
   async clearData() {
-    const confirm = await util.showConfirm('确定要清除所有数据吗？此操作不可恢复。');
+    console.log('clearData 被调用');
     
-    if (confirm) {
-      wx.clearStorageSync();
-      wx.setStorageSync('isFirstLaunch', true);
-      wx.setStorageSync('habits', []);
-      wx.setStorageSync('checkIns', {});
-      
-      // 重置用户信息状态
-      this.setData({ 
-        userInfo: { nickname: '', avatar: '' },
-        hasUserInfo: false 
-      });
-      
-      util.showSuccess('数据已清除');
-      await this.loadStats();
-    }
+    wx.showModal({
+      title: '提示',
+      content: '确定要清除所有数据吗？此操作不可恢复。',
+      success: async (res) => {
+        console.log('弹窗结果:', res.confirm);
+        
+        if (res.confirm) {
+          util.showLoading('清除中...');
+          
+          // 保存用户登录信息
+          const app = getApp();
+          const savedUserId = app.globalData.userId;
+          const savedUserInfo = wx.getStorageSync('userInfo');
+          
+          // 先清除服务器端数据（逐个删除习惯）
+          if (savedUserId && !String(savedUserId).startsWith('local_')) {
+            try {
+              const habits = await api.getHabits();
+              for (const habit of habits) {
+                await api.deleteHabit(habit.id);
+              }
+              console.log('服务器端习惯数据已清除');
+            } catch (error) {
+              console.error('清除服务器数据失败:', error);
+            }
+          }
+          
+          // 清除本地数据
+          wx.clearStorageSync();
+          wx.setStorageSync('isFirstLaunch', true);
+          wx.setStorageSync('habits', []);
+          wx.setStorageSync('checkIns', {});
+          
+          // 恢复用户登录信息
+          if (savedUserId) {
+            wx.setStorageSync('userId', savedUserId);
+          }
+          if (savedUserInfo) {
+            wx.setStorageSync('userInfo', savedUserInfo);
+          }
+          
+          util.hideLoading();
+          
+          // 重置页面状态
+          this.setData({ 
+            userInfo: savedUserInfo || { nickname: '', avatar: '' },
+            hasUserInfo: !!savedUserInfo
+          });
+          
+          util.showSuccess('数据已清除');
+          await this.loadStats();
+        }
+      }
+    });
   },
 
   showAbout() {
@@ -195,7 +289,7 @@ Page({
   showFeedback() {
     wx.showModal({
       title: '意见反馈',
-      content: '如有问题或建议，欢迎反馈！\n\n微信：duyou_feedback',
+      content: '如有问题或建议，欢迎反馈！\n联系人：谢先生\n微信号：xielingjiang001\n手机号：18018506676',
       showCancel: false
     });
   },
