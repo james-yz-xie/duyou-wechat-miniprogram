@@ -21,10 +21,8 @@ Page({
     this.formatTodayDate();
   },
 
-  onShow() {
-    // 加载数据
-    this.loadData();
-    // 检查提醒时段
+  async onShow() {
+    await this.loadData({ showPageLoading: true });
     this.checkRemind();
   },
 
@@ -38,10 +36,22 @@ Page({
     });
   },
 
-  async loadData() {
+  async loadData(options = {}) {
+    const { showPageLoading = false } = options;
+
     this.setData({ loading: true });
-    
+    wx.showNavigationBarLoading();
+
+    if (showPageLoading) {
+      util.showLoading('刷新中...');
+    }
+
     try {
+      const app = getApp();
+      if (app && typeof app.waitForReady === 'function') {
+        await app.waitForReady();
+      }
+
       const [habits, stats] = await Promise.all([
         storage.getTodayStatus(),
         storage.getStatistics()
@@ -49,12 +59,21 @@ Page({
       
       this.setData({
         habits,
-        stats,
-        loading: false
+        stats: stats || {
+          todayCheckedCount: 0,
+          todayTotalCount: 0,
+          totalCheckIns: 0,
+          maxStreak: 0
+        }
       });
     } catch (error) {
       console.error('加载数据失败:', error);
+    } finally {
       this.setData({ loading: false });
+      wx.hideNavigationBarLoading();
+      if (showPageLoading) {
+        util.hideLoading();
+      }
     }
   },
 

@@ -28,7 +28,11 @@
     "wxext14566970e7e9f62": "2.27.3"
   },
   "packOptions": {
-    "ignore": [],
+    "ignore": [
+      { "type": "file", "value": "check-domain-mapping.js" },
+      { "type": "file", "value": "diagnose-cloudflare.js" },
+      { "type": "file", "value": "fix-dns.js" }
+    ],
     "include": []
   },
   "appid": "wx3393d384196a692d",

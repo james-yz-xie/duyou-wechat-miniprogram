@@ -9,9 +9,10 @@ App({
   onLaunch() {
     this.initPromise = null;
 
-    // 初始化云开发
+    // 初始化云开发（多端模式需要传入 appid）
     wx.cloud.init({
-      env: CLOUD_ENV
+      env: CLOUD_ENV,
+      appid: 'wx3393d384196a692d'
     });
     
     // 初始化 API 模块

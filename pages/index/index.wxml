@@ -27,14 +27,15 @@
       <text class="section-date">{{todayDate}}</text>
     </view>
 
-    <!-- 空状态 -->
-    <view wx:if="{{habits.length === 0}}" class="empty-state">
+    <view wx:if="{{loading}}" class="loading-state card">
+      <view class="loading-spinner"></view>
+      <view class="loading-text">正在刷新今日内容...</view>
+    </view>
+    <view wx:elif="{{!habits.length}}" class="empty-state">
       <view class="empty-icon">📝</view>
       <view class="empty-text">还没有添加习惯</view>
       <navigator url="/pages/habit/edit/edit" class="add-btn">+ 添加第一个习惯</navigator>
     </view>
-
-    <!-- 习惯列表 -->
     <view wx:else class="habit-list">
       <view 
         wx:for="{{habits}}" 
