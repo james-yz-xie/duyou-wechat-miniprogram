@@ -48,46 +48,59 @@ Page({
   // 切换提醒开关
   async toggleRemind() {
     const { hasRemind } = this.data;
+    const userId = getApp().globalData.userId;
+
+    if (!userId || String(userId).startsWith('local_')) {
+      util.showError('请先登录');
+      return;
+    }
 
     if (hasRemind) {
       // 关闭提醒
       wx.showModal({
         title: '关闭提醒',
         content: '关闭后，将不再提醒未打卡习惯。',
-        success: (res) => {
+        success: async (res) => {
           if (res.confirm) {
-            wx.removeStorageSync('hasRemind');
-            this.setData({ hasRemind: false });
-            util.showSuccess('已关闭提醒');
+            try {
+              await api.subscribeReminder(false);
+              wx.removeStorageSync('hasRemind');
+              this.setData({ hasRemind: false });
+              util.showSuccess('已关闭提醒');
+            } catch (error) {
+              console.error('关闭提醒失败:', error);
+              util.showError('操作失败');
+            }
           }
         }
       });
     } else {
       // 开启提醒 - 请求订阅消息授权
       try {
-        util.showLoading('请求授权. . .');
-
-        await wx.requestSubscribeMessage({
-          tmplIds: [
-            'YOUR_TEMPLATE_ID_1' // TODO: 替换为你的订阅消息模板 ID
-          ],
-          success: (res) => {
-            util.hideLoading();
-
-            if (res['YOUR_TEMPLATE_ID_1'] === 'ok') {
-              wx.setStorageSync('hasRemind', true);
-              this.setData({ hasRemind: true });
-              util.showSuccess('开启成功！每天 8/12/20 点提醒你打卡');
-            } else {
-              util.showError('订阅失败，请重试');
-            }
-          },
-          fail: (err) => {
-            util.hideLoading();
-            console.error('订阅失败:', err);
-            util.showError('操作失败');
-          }
+        util.showLoading('请求授权...');
+        
+        const res = await wx.requestSubscribeMessage({
+          tmplIds: [api.SUBSCRIBE_TEMPLATE_ID]
         });
+        
+        util.hideLoading();
+        
+        if (res[api.SUBSCRIBE_TEMPLATE_ID] === 'accept') {
+          // 用户同意订阅，保存到后端
+          try {
+            await api.subscribeReminder(true);
+            wx.setStorageSync('hasRemind', true);
+            this.setData({ hasRemind: true });
+            util.showSuccess('开启成功！每天 12:00 提醒你打卡');
+          } catch (error) {
+            console.error('保存订阅状态失败:', error);
+            util.showError('开启失败，请重试');
+          }
+        } else if (res[api.SUBSCRIBE_TEMPLATE_ID] === 'reject') {
+          util.showError('您拒绝了订阅');
+        } else {
+          util.showError('订阅取消');
+        }
       } catch (error) {
         util.hideLoading();
         console.error('开启提醒失败:', error);
@@ -340,5 +353,27 @@ async deleteAccount() {
         util.showError('注销失败');
       }
     }
+  },
+
+  // 测试提醒功能
+  async testReminder() {
+    wx.showModal({
+      title: '测试提醒',
+      content: '点击确定后将立即发送一条测试提醒消息到你的微信。',
+      success: async (res) => {
+        if (res.confirm) {
+          util.showLoading('发送中...');
+          try {
+            await api.triggerReminder();
+            util.hideLoading();
+            util.showSuccess('提醒已发送，请查看微信消息');
+          } catch (error) {
+            util.hideLoading();
+            console.error('测试提醒失败:', error);
+            util.showError('发送失败: ' + (error.message || '未知错误'));
+          }
+        }
+      }
+    });
   }
 });

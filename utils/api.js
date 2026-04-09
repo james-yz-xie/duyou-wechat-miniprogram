@@ -391,6 +391,71 @@ function setOfflineMode(mode) {
   offlineMode = mode;
 }
 
+/**
+ * 订阅消息模板ID
+ */
+const SUBSCRIBE_TEMPLATE_ID = 'R_Hj409ZFmfAArq2XV64wiYOgGfEEZF54UjSmApeNyc';
+
+/**
+ * 订阅提醒
+ * @param {boolean} subscribe true-订阅, false-取消订阅
+ */
+async function subscribeReminder(subscribe) {
+  const userId = getUserId();
+  if (!userId) {
+    throw new Error('请先登录');
+  }
+  
+  try {
+    return await request({
+      path: `/api/subscribe?userId=${userId}`,
+      method: 'POST',
+      data: { 
+        subscribe,
+        templateId: SUBSCRIBE_TEMPLATE_ID 
+      }
+    });
+  } catch (error) {
+    console.error('订阅操作失败:', error);
+    throw error;
+  }
+}
+
+/**
+ * 获取订阅状态
+ */
+async function getSubscribeStatus() {
+  const userId = getUserId();
+  if (!userId) {
+    return { subscribed: false };
+  }
+  
+  try {
+    return await request({
+      path: `/api/subscribe/status?userId=${userId}`,
+      method: 'GET'
+    });
+  } catch (error) {
+    console.error('获取订阅状态失败:', error);
+    return { subscribed: false };
+  }
+}
+
+/**
+ * 手动触发提醒（测试用）
+ */
+async function triggerReminder() {
+  try {
+    return await request({
+      path: '/api/subscribe/trigger',
+      method: 'POST'
+    });
+  } catch (error) {
+    console.error('触发提醒失败:', error);
+    throw error;
+  }
+}
+
 module.exports = {
   initCloudConfig,
   login,
@@ -410,5 +475,9 @@ module.exports = {
   isOfflineMode,
   setOfflineMode,
   getOpenid,
-  getUserId
+  getUserId,
+  SUBSCRIBE_TEMPLATE_ID,
+  subscribeReminder,
+  getSubscribeStatus,
+  triggerReminder
 };
