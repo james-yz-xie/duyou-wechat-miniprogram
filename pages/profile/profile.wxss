@@ -194,3 +194,13 @@
   font-size: 28rpx;
   letter-spacing: 2rpx;
 }
+
+.version-info text {
+  display: block;
+}
+
+.icp-info {
+  margin-top: 12rpx;
+  font-size: 24rpx;
+  opacity: 0.8;
+}

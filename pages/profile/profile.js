@@ -353,27 +353,4 @@ async deleteAccount() {
         util.showError('注销失败');
       }
     }
-  },
-
-  // 测试提醒功能
-  async testReminder() {
-    wx.showModal({
-      title: '测试提醒',
-      content: '点击确定后将立即发送一条测试提醒消息到你的微信。',
-      success: async (res) => {
-        if (res.confirm) {
-          util.showLoading('发送中...');
-          try {
-            await api.triggerReminder();
-            util.hideLoading();
-            util.showSuccess('提醒已发送，请查看微信消息');
-          } catch (error) {
-            util.hideLoading();
-            console.error('测试提醒失败:', error);
-            util.showError('发送失败: ' + (error.message || '未知错误'));
-          }
-        }
-      }
-    });
-  }
-});
+  }});
