@@ -394,7 +394,7 @@ function setOfflineMode(mode) {
 /**
  * 订阅消息模板ID
  */
-const SUBSCRIBE_TEMPLATE_ID = 'R_Hj409ZFmfAArq2XV64wiYOgGfEEZF54UjSmApeNyc';
+const SUBSCRIBE_TEMPLATE_ID = 'kBXtrNAwTn7m9oFnX464LTy_6KIvYdu6XaS42HXSONo';
 
 /**
  * 订阅提醒
